@@ -47,3 +47,43 @@ const images = [
     description: 'Lighthouse Coast Sea',
     },
 ];
+
+// import * as basicLightbox from 'basiclightbox';
+// to paste
+const galleryElem = document.querySelector('ul.gallery');
+// what paste
+function imgTemplate({ preview, original, description}) { 
+    return `
+    <li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
+        </a>
+    </li>`;
+}
+
+function imgesTemlate(arrImges) { 
+    return arrImges.map(imgTemplate).join('');
+}
+
+// listener event load document
+document.addEventListener('DOMContentLoaded', () => { 
+    const markup = imgesTemlate(images);
+    galleryElem.innerHTML = markup;
+});
+
+galleryElem.addEventListener('click', (e) => { 
+    e.preventDefault();
+    // console.log(e.target.getAttribute('data-source'));
+    let dataAtrLinkImg = e.target.getAttribute('data-source');
+    if (e.target.tagName !== "IMG") {
+        return;
+    }
+    // console.log(e.target.tagName);
+    const instance = basicLightbox.create(`<img src="${dataAtrLinkImg}">`);
+    instance.show();
+});
